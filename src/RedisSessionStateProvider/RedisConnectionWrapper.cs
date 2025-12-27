@@ -23,7 +23,7 @@ namespace Microsoft.Web.Redis
         public RedisConnectionWrapper(ProviderConfiguration configuration, string id)
         {
             this.configuration = configuration;
-            Keys = new KeyGenerator(id, configuration.ApplicationName);
+            Keys = new KeyGenerator(id, configuration.ApplicationName,configuration.EnableSessionKeyHashtag);
 
             // only single object of RedisSharedConnection will be created and then reused
             if (sharedConnection == null)

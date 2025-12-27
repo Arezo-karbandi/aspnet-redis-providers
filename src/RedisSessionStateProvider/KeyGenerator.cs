@@ -14,24 +14,25 @@ namespace Microsoft.Web.Redis
         public string LockKey { get; private set; }
         public string InternalKey { get; private set; }
 
-        private void GenerateKeys(string id, string app)
+        private void GenerateKeys(string id, string app, bool enableSessionKeyHashtag)
         {
             this.id = id;
-            DataKey = $"{{{app}_{id}}}_SessionStateItemCollection";
-            LockKey = $"{{{app}_{id}}}_WriteLock";
-            InternalKey = $"{{{app}_{id}}}_SessionTimeout";
+            string prefixKey = enableSessionKeyHashtag ?  $"{{{app}_{id}}}" : $"{app}_{id}";
+            DataKey = $"{prefixKey}_SessionStateItemCollection";
+            LockKey = $"{prefixKey}_WriteLock";
+            InternalKey = $"{prefixKey}_SessionTimeout";
         }
 
-        public KeyGenerator(string sessionId, string applicationName)
+        public KeyGenerator(string sessionId, string applicationName, bool enableSessionKeyHashtag)
         {
-            GenerateKeys(sessionId, applicationName);
+            GenerateKeys(sessionId, applicationName,enableSessionKeyHashtag);
         }
 
-        public void RegenerateKeyStringIfIdModified(string sessionId, string applicationName)
+        public void RegenerateKeyStringIfIdModified(string sessionId, string applicationName, bool enableSessionKeyHashtag)
         {
             if (!sessionId.Equals(this.id))
             {
-                GenerateKeys(sessionId, applicationName);
+                GenerateKeys(sessionId, applicationName, enableSessionKeyHashtag);
             }
         }
     }
