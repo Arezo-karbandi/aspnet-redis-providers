@@ -14,7 +14,7 @@ using System.Web.Hosting;
 namespace Microsoft.Web.Redis
 {
     internal class ProviderConfiguration
-    {
+    {    
         public TimeSpan RequestTimeout { get; set; }
         public TimeSpan SessionTimeout { get; set; }
         public int Port { get; set; }
@@ -28,7 +28,7 @@ namespace Microsoft.Web.Redis
         public int ConnectionTimeoutInMilliSec { get; set; }
         public int OperationTimeoutInMilliSec { get; set; }
         public string ConnectionString { get; set; }
-
+        public bool EnableSessionKeyHashtag { get; set; } = true;
         /* Empty constructor required for testing */
 
         internal ProviderConfiguration()
@@ -84,6 +84,7 @@ namespace Microsoft.Web.Redis
             Port = GetIntSettings(config, "port", 0);
             AccessKey = GetStringSettings(config, "accessKey", null);
             UseSsl = GetBoolSettings(config, "ssl", true);
+            EnableSessionKeyHashtag = GetBoolSettings(config, "enableSessionKeyHashtag", true);
             // All below parameters are only fetched from web.config
             DatabaseId = GetIntSettings(config, "databaseId", 0);
             ApplicationName = GetStringSettings(config, "applicationName", null);
